@@ -35,4 +35,36 @@ app.post('/add_person',(req,res)=>{
 
     });
 });
-app.listen(3000);
+
+
+app.get('/planetas',(req,res)=>{
+
+    const sql = "select * from Planeta";
+    cnn.query(sql,(error,result) => {
+        if(error) throw error;
+        if(result.length > 0){
+            res.json(result);
+        }else{
+            res.send("Sin resultados");
+        }
+
+    });
+});
+
+app.post('/add_planeta',(req,res)=>{
+
+    const person = {
+
+        nombrePlaneta : req.body.nombrePlaneta
+    };
+    const sql = "insert into Planeta set ?";
+    cnn.query(sql,person,error => {
+        if(error) throw error;
+        res.send('Planeta Creado');
+
+    });
+});
+const PORT = process.env.PORT || 3000;
+app.listen(PORT ,()=>{
+    console.log("Servidor escuchando en el puerto "+PORT);
+});
